@@ -1,6 +1,7 @@
 import {
   app,
   BrowserWindow,
+  globalShortcut,
 } from "electron";
 import { join } from "path";
 
@@ -12,6 +13,9 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 900,
     height: 680,
+    alwaysOnTop: true,
+    titleBarStyle: 'hidden',
+    autoHideMenuBar: true
   });
 
   const url =
@@ -27,22 +31,46 @@ const createWindow = () => {
     app.quit();
   });
 
-  if (!isProd) mainWindow.webContents.openDevTools();
-
   mainWindow.on("closed", () => {
     mainWindow = null;
   });
 };
 
-app.on("ready", createWindow);
+const toggleWindow = () => {
+  if (mainWindow?.isMaximized) {
+    console.log('visible => hidden')
+    mainWindow?.minimize()
+  } else {
+    console.log('hidden => visible')
+    mainWindow?.show()
+  }
+}
 
-// those two events are completely optional to subscrbe to, but that's a common way to get the
-// user experience people expect to have on macOS: do not quit the application directly
-// after the user close the last window, instead wait for Command + Q (or equivalent).
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") app.quit();
-});
+const createShortcut = () => {
+  const ret = globalShortcut.register('Alt+Insert', () => {
+    toggleWindow()
+  })
 
-app.on("activate", () => {
-  if (mainWindow === null) createWindow();
-});
+  if (!ret) {
+    console.log('shortcut registration failed.')
+    app.quit()
+  }
+}
+
+app.whenReady().then(() => {
+
+  createShortcut()
+  createWindow()
+
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow()
+    }
+  })
+})
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
