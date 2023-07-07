@@ -10,13 +10,16 @@ const isProd = process.env.NODE_ENV === "production" || app.isPackaged;
 
 let mainWindow: BrowserWindow | null;
 
+
 const createWindow = () => {
   mainWindow = new BrowserWindow({
-    width: 900,
-    height: 680,
     alwaysOnTop: true,
     titleBarStyle: 'hidden',
-    autoHideMenuBar: true
+    movable: true,
+    autoHideMenuBar: true,
+    frame: false,
+    transparent: true,
+    fullscreen: true
   });
 
   const url =

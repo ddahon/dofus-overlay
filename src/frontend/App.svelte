@@ -4,12 +4,8 @@
 </script>
 
 <main>
-  <h1>Todo App</h1>
-  <div class='main-bar-container'>
-    <MainBar/>
-  </div>
+  <MainBar/>
 </main>
 
 <style>
-  
 </style>
