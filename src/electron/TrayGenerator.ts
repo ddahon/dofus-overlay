@@ -1,30 +1,21 @@
 import { Tray, type BrowserWindow, KeyboardEvent, Menu, MenuItem } from "electron";
 import path from "path";
+import { MainWindow } from "./MainWindow";
 
 export class TrayGenerator {
     tray: Tray;
-    mainWindow: BrowserWindow;
-    toggleWindow: Function;
-    
-    constructor(mainWindow: BrowserWindow, toggleWindow: Function) {
+    mainWindow: MainWindow;
+
+    constructor(mainWindow: MainWindow) {
         this.tray = this.createTray();
         this.mainWindow = mainWindow;
-        this.toggleWindow = toggleWindow
     }
-
-    getWindowPosition = () => {
-        const windowBounds = this.mainWindow.getBounds();
-        const trayBounds = this.tray.getBounds();
-        const x = Math.round(trayBounds.x + (trayBounds.width / 2) - (windowBounds.width / 2));
-        const y = Math.round(trayBounds.y + trayBounds.height);
-        return { x, y };
-    };
 
     createMenu = () => {
         let menuItems = [
             {
                 label: 'Open',
-                click: (_menuItem: MenuItem, _browserWindow: BrowserWindow | undefined, _event: KeyboardEvent) => { this.toggleWindow() }
+                click: (_menuItem: MenuItem, _browserWindow: BrowserWindow | undefined, _event: KeyboardEvent) => { this.mainWindow.toggle() }
             },
             {
                 label: 'Settings'

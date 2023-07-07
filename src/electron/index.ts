@@ -5,15 +5,14 @@ import {
 } from "electron";
 import { join } from "path";
 import { TrayGenerator } from './TrayGenerator';
+import { MainWindow } from "./MainWindow";
 
 const isProd = process.env.NODE_ENV === "production" || app.isPackaged;
 
-let mainWindow: BrowserWindow | null;
-
+let mainWindow: MainWindow | null;
 
 const createWindow = () => {
-  mainWindow = new BrowserWindow({
-    alwaysOnTop: true,
+  mainWindow = new MainWindow({
     titleBarStyle: 'hidden',
     movable: true,
     autoHideMenuBar: true,
@@ -40,19 +39,9 @@ const createWindow = () => {
   });
 };
 
-const toggleWindow = () => {
-  if (mainWindow?.isMaximized) {
-    console.log('visible => hidden')
-    mainWindow?.minimize()
-  } else {
-    console.log('hidden => visible')
-    mainWindow?.show()
-  }
-}
-
 const createShortcut = () => {
   const ret = globalShortcut.register('Alt+Insert', () => {
-    toggleWindow()
+    mainWindow?.toggle()
   })
 
   if (!ret) {
@@ -66,7 +55,7 @@ app.whenReady().then(() => {
   createShortcut()
   createWindow()
   if (mainWindow == null) throw Error("Error while creating mainWindow")
-  new TrayGenerator(mainWindow, toggleWindow)
+  new TrayGenerator(mainWindow)
   
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
