@@ -4,6 +4,7 @@ import {
   globalShortcut,
 } from "electron";
 import { join } from "path";
+import { TrayGenerator } from './TrayGenerator';
 
 const isProd = process.env.NODE_ENV === "production" || app.isPackaged;
 
@@ -61,7 +62,9 @@ app.whenReady().then(() => {
 
   createShortcut()
   createWindow()
-
+  if (mainWindow == null) throw Error("Error while creating mainWindow")
+  new TrayGenerator(mainWindow, toggleWindow)
+  
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow()
