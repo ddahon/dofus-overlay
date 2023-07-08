@@ -7,6 +7,8 @@
     height: var(--height);
     margin-top: var(--margin-top);
     margin-left: var(--margin-left);
+    box-shadow: 12px 12px 5px rgba(0, 0, 0, .3);
+    outline: none
   }
 </style>
 
@@ -15,4 +17,5 @@
   let heightVh = 4;
 </script>
 
-<input style="--width: {widthVw}vw; --height: {heightVh}vh; --margin-top: -{heightVh/2}vh; --margin-left: -{widthVw/2}vw" id="main-bar" type="text" />
+<!-- svelte-ignore a11y-autofocus -->
+<input autofocus style="--width: {widthVw}vw; --height: {heightVh}vh; --margin-top: -{heightVh/2}vh; --margin-left: -{widthVw/2}vw" id="main-bar" type="text" />
