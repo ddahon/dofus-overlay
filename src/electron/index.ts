@@ -49,6 +49,8 @@ app.whenReady().then(() => {
   createShortcut();
   createWindow();
   if (mainWindow == null) throw Error("Error while creating mainWindow");
+  mainWindow.maximize();
+  mainWindow.hide();
   new TrayGenerator(mainWindow);
 
   app.on("activate", () => {
