@@ -1,11 +1,10 @@
-<script lang="ts">
-    import MainBar from "./MainBar.svelte";
+<style>
+</style>
 
+<script lang="ts">
+  import MainBar from "./MainBar.svelte";
 </script>
 
 <main>
-  <MainBar/>
+  <MainBar />
 </main>
-
-<style>
-</style>
